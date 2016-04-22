@@ -7,6 +7,6 @@ y -= 1;
 
 z := x + y;
 
-out(x);
-out(y);
-out(z);
+call out( x );
+call out( y );
+call out( z );

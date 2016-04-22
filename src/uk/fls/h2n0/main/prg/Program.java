@@ -1,8 +1,13 @@
 package uk.fls.h2n0.main.prg;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Stack;
 
 import fls.engine.main.io.FileIO;
+import uk.fls.h2n0.main.prg.values.Variable;
+import uk.fls.h2n0.main.prg.values.Variable.Type;
 
 public class Program {
 
@@ -34,8 +39,10 @@ public class Program {
 	
 	private void processLine(String line){
 		if(!line.endsWith(";"))error("Excpected ';' at the end of line: " + this.humanLine);
-		
 		//After syntax errors, for now
+		
+		line = line.substring(0, line.length() - 1);
+		lookForVars(line);
 		line = fillWithVars(line);
 	}
 	
@@ -55,7 +62,7 @@ public class Program {
 		return this.currentLine == this.lines.length && !this.started;
 	}
 	
-	private String fillWithVars(String line){
+	private String lookForVars(String line){
 		
 		if(line.contains(":")){// Doing something with vars.
 			String[] parts = line.trim().split("");
@@ -69,20 +76,40 @@ public class Program {
 			}
 			name = name.trim();// Final name of var.
 			
+			if(this.vars.containsKey(name))return line;
 			if(name.contains(" "))error("Unexcpected ' ' when declaring variable in line: " + this.humanLine);
 			if(Character.isDigit(name.charAt(0)))error("Unexpected number on line: " + this.humanLine);
 			
 			if(line.substring(cPos, cPos+1).equals("=")){// Dynamic assignment
-				
+				System.out.println(line.substring(cPos + 2));
 			}else{ // Strict assignment
 				String type = "";
+				int ePos = -1;
 				for(int i = cPos; i < parts.length; i++){
 					if(parts[i].contains("=")){
+						ePos = i;
 						type = line.substring(cPos,i-1);
 					}
 				}
 				
 				type = type.trim();// Final type of var
+				
+				String rest = line.substring(ePos).trim();
+				if(type.equals("int")){
+					Variable v = new Variable(Type.INT);
+					v.setInt(Integer.parseInt(rest));
+					if(!this.vars.containsKey(name)){
+						this.vars.put(name, v);
+					}
+				}else if(type.equals("bool")){
+					
+				}else if(type.equals("string")){
+					Variable v = new Variable(Type.STRING);
+					v.setString(rest);
+					if(!this.vars.containsKey(name)){
+						this.vars.put(name, v);
+					}
+				}
 			}
 			
 			
@@ -91,6 +118,28 @@ public class Program {
 		}
 		
 		return line;
+	}
+	
+	private String fillWithVars(String line){
+		if(this.vars.size() == 0)return line;
+		String[] parts = line.split(" ");
+		List<String> fin = new ArrayList<String>();
+		for(int i = 0; i < parts.length; i++){
+			String c = parts[i];
+			if(this.vars.containsKey(c)){
+				fin.add(this.vars.get(c).getValue());
+			}else{
+				fin.add(c);
+			}
+		}
+		
+		String alt = "";
+		for(int i = 0; i < fin.size(); i++){
+			alt += fin.get(i) + " ";
+		}
+		alt = alt.trim();
+		System.out.println(alt);
+		return alt;
 	}
 	
 	private void error(String r){
