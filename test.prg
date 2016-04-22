@@ -1,6 +1,6 @@
-x : int = 3;
-y : int = 4;
-
+x:int=3;
+y:int=4;
+c:string = "JIO";
 
 x += 7;
 y -= 1;

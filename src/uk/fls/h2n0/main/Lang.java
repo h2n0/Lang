@@ -8,9 +8,9 @@ public class Lang{
 		String name = "test.prg";
 		Program prg;
 		prg = new Program(name);
-		System.out.println("Running " + name);
+		System.out.println("Running " + name + "\n");
 		prg.start();
-		System.out.println("Finished running " + name);
+		System.out.println("\nFinished running " + name);
 	}
 	
 	public static void main(String[] args){
