@@ -1,4 +1,4 @@
-x:int=3;
+x:int=3+2-10;
 y:int=4;
 c:string = "JIO";
 
@@ -7,6 +7,6 @@ y -= 1;
 
 z := x + y;
 
-call out( x );
-call out( y );
-call out( z );
+out( x );
+out( y );
+out( c );

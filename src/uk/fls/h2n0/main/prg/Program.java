@@ -81,7 +81,7 @@ public class Program {
 			if(Character.isDigit(name.charAt(0)))error("Unexpected number on line: " + this.humanLine);
 			
 			if(line.substring(cPos, cPos+1).equals("=")){// Dynamic assignment
-				System.out.println(line.substring(cPos + 2));
+				//System.out.println(line.substring(cPos + 2));
 			}else{ // Strict assignment
 				String type = "";
 				int ePos = -1;
@@ -97,7 +97,7 @@ public class Program {
 				String rest = line.substring(ePos).trim();
 				if(type.equals("int")){
 					Variable v = new Variable(Type.INT);
-					v.setInt(Integer.parseInt(rest));
+					v.setInt(Interpriter.instance.compute(rest));
 					if(!this.vars.containsKey(name)){
 						this.vars.put(name, v);
 					}
