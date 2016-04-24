@@ -188,6 +188,7 @@ public class Program {
 				next = true;
 			}
 			
+<<<<<<< HEAD
 			if(next){
 				while(true){
 					if(i == this.fileLines.length-2){
@@ -232,6 +233,28 @@ public class Program {
 							value = true;
 							break;
 						}
+=======
+			if(line.substring(cPos, cPos+1).equals("=")){// Dynamic assignment
+				//System.out.println(line.substring(cPos + 2));
+			}else{ // Strict assignment
+				String type = "";
+				int ePos = -1;
+				for(int i = cPos; i < parts.length; i++){
+					if(parts[i].contains("=")){
+						ePos = i;
+						type = line.substring(cPos,i-1);
+					}
+				}
+				
+				type = type.trim();// Final type of var
+				
+				String rest = line.substring(ePos).trim();
+				if(type.equals("int")){
+					Variable v = new Variable(Type.INT);
+					v.setInt(Interpriter.instance.compute(rest));
+					if(!this.vars.containsKey(name)){
+						this.vars.put(name, v);
+>>>>>>> 29f78ae9013218a54de9d12dd10142b87ab2a6a5
 					}
 					if(value){
 						if(!(getVariabeWithName(c).isNum() || getVariabeWithName(c).isBool()))secs.add(""+getVariabeWithName(c).getSValue());

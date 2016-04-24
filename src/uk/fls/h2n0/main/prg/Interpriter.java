@@ -27,10 +27,12 @@ public class Interpriter {
 		String res= "";
 		Stack<String> out = new Stack<String>();
 		Stack<String> ops = new Stack<String>();
+		boolean same = true;
 		for(int i = 0; i < math.length; i++){
 			String c = math[i];
 			if(c.equals("") || c.equals(" "))continue;
 			if(c.contains("+") || c.contains("-") || c.contains("/") || c.contains("*") || c.contains("^")){//Ops
+				same = false;
 				int prec = getPresedance(c);
 				boolean los = isLeftOsc(c);
 				
@@ -52,7 +54,12 @@ public class Interpriter {
 					out.push(part);
 				}
 			}else{//Nums
-				out.push(c);
+				String cc = c;
+				if(same && !out.isEmpty()){
+					cc = out.pop() + cc;
+				}
+				out.push(cc);
+				same = true;
 			}
 		}
 
@@ -63,6 +70,8 @@ public class Interpriter {
 		while(!out.empty()){
 			res = out.pop() + " " + res;
 		}
+		
+		System.out.println(res);
 		return res;
 	}
 	
@@ -81,7 +90,7 @@ public class Interpriter {
 	}
 	
 	public int compute(String math){
-		String[] smath = math.split(" ");
+		String[] smath = math.split("");
 		String pol = this.regularToPolish(smath);
 		String out = this.polishSumAlgo(pol.split(" "));
 		return Integer.parseInt(out);
@@ -94,22 +103,22 @@ public class Interpriter {
 		try{
 			for(String j : math){
 				String c = j;
-				if(c.indexOf("+") == -1 && c.indexOf("-") == -1 && c.indexOf("*") == -1 && c.indexOf("/") == -1 && c.indexOf("^") == -1){// Not an operator
+				if(!c.contains("+") && !c.contains("-") && !c.contains("*") && !c.contains("/") && !c.contains("^")){// Not an operator
 					mathStack.push(c);
 				}else{
 
 					int op2 = Integer.valueOf(mathStack.pop());
 					int op1 = Integer.valueOf(mathStack.pop());
 					int op3 = 0;
-					if(c.indexOf("+") != -1){
+					if(c.contains("+")){
 						op3 = op1 + op2;
-					}else if(c.indexOf("-") != -1){
+					}else if(c.contains("-")){
 						op3 = op1 - op2;
-					}else if(c.indexOf("*") != -1){
+					}else if(c.contains("*")){
 						op3 = op1 * op2;
-					}else if(c.indexOf("/") != -1){
+					}else if(c.contains("/")){
 						op3 = op1 / op2;
-					}else if(c.indexOf("^") != -1){
+					}else if(c.contains("^")){
 						op3  = (int)Math.pow(op1, op2);
 					}
 					mathStack.push(""+op3);
