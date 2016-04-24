@@ -55,9 +55,9 @@ public class Program {
 				}
 			}else{
 				if(currentLine >= this.currentFunc.getEL()){
+					this.currentFunc.terminate();
 					this.currentFunc = null;
 					this.currentLine = this.calledFromLine;
-					this.currentLine ++;
 					this.calledFromLine = -1;
 					continue;
 				}
@@ -130,8 +130,7 @@ public class Program {
 					}
 				}
 			}else{
-				String part = line.split(" ")[0];
-				String[] args = part.substring(part.indexOf("(")+1,part.indexOf(")")).split(",");
+				String[] args = line.substring(line.indexOf("(")+1, line.indexOf(")")).split(",");
 				if(args.length == 1){
 					if(args[0].isEmpty()){
 						callFunction(this.getFunctionOnCurrentLine());
@@ -172,13 +171,11 @@ public class Program {
 		boolean next = false;
 		for(int i = 0; i < this.fileLines.length; i++){
 			String line = this.fileLines[i];
-
-			if(line.isEmpty())continue;
 			
 			if(line.contains("function")){//Found a function
 				start = i;
 				fName = line.split(" ")[1].substring(0, line.split(" ")[1].indexOf("("));
-				args = line.split(" ")[1].substring(line.split(" ")[1].indexOf("("), line.split(" ")[1].indexOf(")")-1).split(",");
+				args = line.substring(line.indexOf("(")+1, line.indexOf(")")).split(",");
 				
 				if(args.length == 1){
 					if(args[0].isEmpty()){
@@ -188,7 +185,6 @@ public class Program {
 				next = true;
 			}
 			
-<<<<<<< HEAD
 			if(next){
 				while(true){
 					if(i == this.fileLines.length-2){
@@ -233,28 +229,6 @@ public class Program {
 							value = true;
 							break;
 						}
-=======
-			if(line.substring(cPos, cPos+1).equals("=")){// Dynamic assignment
-				//System.out.println(line.substring(cPos + 2));
-			}else{ // Strict assignment
-				String type = "";
-				int ePos = -1;
-				for(int i = cPos; i < parts.length; i++){
-					if(parts[i].contains("=")){
-						ePos = i;
-						type = line.substring(cPos,i-1);
-					}
-				}
-				
-				type = type.trim();// Final type of var
-				
-				String rest = line.substring(ePos).trim();
-				if(type.equals("int")){
-					Variable v = new Variable(Type.INT);
-					v.setInt(Interpriter.instance.compute(rest));
-					if(!this.vars.containsKey(name)){
-						this.vars.put(name, v);
->>>>>>> 29f78ae9013218a54de9d12dd10142b87ab2a6a5
 					}
 					if(value){
 						if(!(getVariabeWithName(c).isNum() || getVariabeWithName(c).isBool()))secs.add(""+getVariabeWithName(c).getSValue());
@@ -347,8 +321,8 @@ public class Program {
 	
 	private Variable getVariabeWithName(String var){
 		if(this.currentFunc != null){
-			if(this.currentFunc.locals.containsValue(var)){
-				return this.currentFunc.locals.get(var);
+			if(this.currentFunc.getVars().containsKey(var)){
+				return this.currentFunc.getVars().get(var);
 			}
 		}
 		return this.vars.get(var);
@@ -418,9 +392,13 @@ public class Program {
 	}
 	
 	private void callFunction(Function c, String...args){
+		String[] filledArgs = new String[args.length];
+		for(int i = 0; i < filledArgs.length; i++){
+			filledArgs[i] = fillWithVars(args[i]);
+		}
 		this.currentFunc = c;
-		this.currentFunc.call(args);
 		this.calledFromLine = this.currentLine+1;
 		this.currentLine = c.getSL();
+		this.currentFunc.call(filledArgs);
 	}
 }

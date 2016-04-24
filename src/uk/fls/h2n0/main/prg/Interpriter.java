@@ -71,7 +71,6 @@ public class Interpriter {
 			res = out.pop() + " " + res;
 		}
 		
-		System.out.println(res);
 		return res;
 	}
 	
