@@ -1,12 +1,23 @@
-x:int=3;
-y:int=4;
-c:string = "JIO";
+num x = pi;
+num y = 4;
+
+string name = "Dave";
 
 x += 7;
 y -= 1;
 
-z := x + y;
+num z = x + y;
 
-call out( x );
-call out( y );
-call out( z );
+function printThings() {
+	out x;
+	out z;
+	out x + y;
+}
+
+function a(x) {
+	out "Function";
+	out "Function";
+	out "Function";
+}
+
+a(1);

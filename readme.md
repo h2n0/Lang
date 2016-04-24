@@ -21,19 +21,29 @@
 
 ## Example program
 ```
-  function start():void {
-    x : int = 3;
-    y : int = 4;
+num x = 3;
+num y = 4;
+string name = "Dave";
 
-    x += 7;
-    y -= 1;
+x += 7;
+y -= 1;
 
-    z := x + y;
+num z = x + y;
 
-    out(x);
-    out(y);
-    out(z);
-  }
+out z;
+out name;
 ```
 
-When this example is run, we should get the output as "10 3 13".
+When this example is run, we should get the output as '13 "Dave"'.
+
+## Completion list
+
+Completed:
+  - Basic parsing of file.
+  - Variables can be manipulated.
+  - Functions can be created and called.
+  - Can add special variables such as "pi" with ease.
+
+Todo (in order of importance):
+  - Local variables in functions.
+  - 
