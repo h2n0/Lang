@@ -46,4 +46,9 @@ Completed:
 
 Todo (in order of importance):
   - Local variables in functions.
-  - 
+  - Arrays.
+  - Non integer number support.
+  - File reading.
+  - Self-interpriting (possibility).
+
+I'm open to suggestions if you have any, just open up a new issue and tag it as suggestion. I'll do my best to read it ASAP.
